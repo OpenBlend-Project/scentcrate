@@ -1,20 +1,19 @@
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
+// Gets access to environment variables
+require("dotenv").config();
 
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
+// Connects to the database
+require("./db");
+
+// Handles http requests
+const express = require("express");
 
 var app = express();
 
-app.use(logger('dev'));
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+require("./config")(app);
 
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
+// Route handling
+var indexRouter = require('./routes/index.routes');
+app.use('/api', indexRouter);
+
 
 module.exports = app;
