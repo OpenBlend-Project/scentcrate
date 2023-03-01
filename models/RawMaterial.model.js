@@ -1,19 +1,33 @@
 const { Schema, model } = require("mongoose");
-const { validateCAS, validateEC} = require("../utils/validators");
+const { validateCAS, validateEINECS} = require("../utils/validators");
 
 const rawMaterialSchema = new Schema({
-  cas: {
-    type: String,
-    required: true,
-    validate: {
-      validator: validateCAS
-    }
-  },
-  ec: {
-    type: String,
-    required: true,
-    validate: {
-      validator: validateEC
+  identifier: {
+    cas: {
+      type: String,
+      required: true,
+      validate: {
+        validator: validateCAS
+      }
+    },
+    einecs: {
+      type: String,
+      required: false,
+      validate: {
+        validator: validateEINECS
+      }
+    },
+    fema: {
+      type: String,
+      required: false
+    },
+    jecfa: {
+      type: String,
+      required: false
+    },
+    flavis: {
+      type: String,
+      required: false
     }
   },
   name: {
@@ -110,13 +124,47 @@ const rawMaterialSchema = new Schema({
       required: false
     }
   },
-  molecularFormula: {
-    type: String,
-    required: false
-  },
-  appearance: {
-    type: String,
-    required: false,
+  chemicalProperties: {
+    molecularFormula: {
+      type: String,
+      required: false
+    },
+    molecularWeight: {
+      type: Number,
+      required: false
+    },
+    appearance: {
+      type: String,
+      required: false
+    },
+    boilingPoint: {
+      type: Number,
+      required: false
+    },
+    meltingPoint: {
+      type: Number,
+      required: false
+    },
+    flashPoint: {
+      type: Number,
+      required: false
+    },
+    fusionPoint: {
+      type: Number,
+      required: false
+    },
+    density: {
+      type: Number,
+      required: false
+    },
+    logP: {
+      type: Number,
+      required: false
+    },
+    detectionThreshold: {
+      type: Number,
+      required: false
+    }
   },
   olfactiveProperties: {
     family: {
@@ -166,7 +214,7 @@ const rawMaterialSchema = new Schema({
         "camphoric",
         "cedar",
         "cinnamic",
-        "citric",
+        "citrus",
         "coconut",
         "coniferous",
         "cool spices",
@@ -175,12 +223,14 @@ const rawMaterialSchema = new Schema({
         "cut grass",
         "dry woods",
         "earthy",
-        "etheric solvent",
+        "etheric",
         "eugenol",
         "fatty",
         "feacal",
         "fresh flowers",
         "fresh woods",
+        "floral",
+        "fruity",
         "geranium",
         "gourmant",
         "grapefruit",
@@ -224,6 +274,7 @@ const rawMaterialSchema = new Schema({
         "solar",
         "spicy",
         "sulfuric",
+        "sweet",
         "tea",
         "terpenic",
         "tobacco",
@@ -233,25 +284,61 @@ const rawMaterialSchema = new Schema({
         "violet flower",
         "warm spices",
         "warm woods",
+        "woody",
         "waxy",
         "white flowers",
         "yellow fruits",
         "zesty",
         "other"
       ]
+    },
+    volatility: {
+      type: [String],
+      required: true,
+      enum: [
+        "head",
+        "heart",
+        "base"
+      ]
     }
   },
   primaryConstituents: {
     byAmount: {
       type: Schema.Types.ObjectId,
-      ref: "RawMaterial"
+      ref: "RawMaterial",
+      required: false
     },
     byOlfactiveImpact: {
       type: Schema.Types.ObjectId,
-      ref: "RawMaterial"
+      ref: "RawMaterial",
+      required: false
+    }
+  },
+  ifra: {
+    isRestricted: {
+      type: Boolean,
+      required: false
+    },
+    restrictionType: {
+      type: String,
+      required: false,
+      enum: [
+        'Prohibition',
+        'Restriction',
+        'Specification'
+      ]
+    },
+    restrictionCause: {
+      type: String,
+      required: false,
+    },
+    amendment: {
+      type: Number,
+      required: false
     }
   }
 })
 
 
 module.exports = model("RawMaterial", rawMaterialSchema);
+

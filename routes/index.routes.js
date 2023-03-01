@@ -1,10 +1,17 @@
-var express = require('express');
-var router = express.Router();
+const express = require('express');
+const router = express.Router();
 
-/* GET home page. */
-router.get('/', function(req, res, next) {
-  console.log("hello world")
-  res.json({"message" : "hello"})
+const RawMaterial = require('../models/RawMaterial.model');
+
+/* Post home page. */
+router.post('/', function(req, res, next) {
+  RawMaterial.create(req.body)
+    .then(rawMaterial => {
+      res.status(201).json(rawMaterial);
+    })
+  .catch(error => {
+    res.status(500).json(error);
+  });
 });
 
 module.exports = router;
