@@ -1,3 +1,4 @@
+const Query = require('airtable/lib/query');
 const express = require('express');
 const router = express.Router();
 
@@ -39,5 +40,58 @@ router.get('/materials/:id', (req, res, next) => {
       res.status(500).json(error);
     });
 });
+
+// SEARCH /api/search?q={query} - search for an item by any field
+router.get('/search', (req, res, next) => {
+  const { a, q } = req.query;
+  const wantsAutocomplete = ((a === 1) ? true : false);
+  const query = q.toString().toLowerCase();
+
+  console.log(query);
+  
+  if (wantsAutocomplete) {
+    RawMaterial.aggregate([
+      {
+        $search: {
+          index: "autocompleteMaterials",
+          autocomplete: {
+            query: query,
+            path: "*",
+            tokenOrder: "sequential"
+          }
+        }
+      },
+      {
+        $limit: 10
+      },
+      {
+        $project: {
+          "name.common": 1
+        }
+      }
+    ])
+      .then(response => res.json(response))
+      .catch(error => console.log(error));
+  }
+
+  if (!wantsAutocomplete) {
+    RawMaterial.aggregate([
+      {
+        $search: {
+          index: "materials",
+          text: {
+            query: query,
+            path: {
+              wildcard: "*"
+            },
+            fuzzy: {}
+          }
+        }
+      }
+    ])
+      .then(response => res.json(response))
+      .catch(error => console.log(error));
+  }
+})
 
 module.exports = router;
