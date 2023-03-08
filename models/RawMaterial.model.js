@@ -154,7 +154,7 @@ const rawMaterialSchema = new Schema({
       required: false
     },
     density: {
-      type: Number,
+      type: String,
       required: false
     },
     logP: {
@@ -164,6 +164,16 @@ const rawMaterialSchema = new Schema({
     detectionThreshold: {
       type: Number,
       required: false
+    },
+    solubility: {
+      type: [String],
+      required: false,
+      enum: [
+        "Ethanol",
+        "Fixed Oils",
+        "Propylene Glycol",
+        "Water"
+      ]
     }
   },
   olfactiveProperties: {
@@ -227,9 +237,11 @@ const rawMaterialSchema = new Schema({
         "eugenol",
         "fatty",
         "feacal",
+        "fresh",
         "fresh flowers",
         "fresh woods",
         "floral",
+        "foliage",
         "fruity",
         "geranium",
         "gourmant",
@@ -237,6 +249,7 @@ const rawMaterialSchema = new Schema({
         "grassy",
         "green",
         "green fruits",
+        "herbal",
         "honeyed",
         "icy",
         "incense",
@@ -262,6 +275,7 @@ const rawMaterialSchema = new Schema({
         "orange blossom",
         "orris root",
         "ozonic",
+        "peel",
         "plastic",
         "powdery",
         "powdery flowers",
@@ -304,12 +318,12 @@ const rawMaterialSchema = new Schema({
   },
   primaryConstituents: {
     byAmount: {
-      type: Schema.Types.ObjectId,
+      type: [Schema.Types.ObjectId],
       ref: "RawMaterial",
       required: false
     },
     byOlfactiveImpact: {
-      type: Schema.Types.ObjectId,
+      type: [Schema.Types.ObjectId],
       ref: "RawMaterial",
       required: false
     }
@@ -332,6 +346,198 @@ const rawMaterialSchema = new Schema({
       type: String,
       required: false,
     },
+    restrictionLimits: {
+      category1: {
+        isRestricted: {
+          type: Boolean,
+          default: false
+        },
+        limit: {
+          type: Number,
+          default: 0
+        },
+      },
+      category2: {
+        isRestricted: {
+          type: Boolean,
+          default: false
+        },
+        limit: {
+          type: Number,
+          default: 0
+        },
+      },
+      category3: {
+        isRestricted: {
+          type: Boolean,
+          default: false
+        },
+        limit: {
+          type: Number,
+          default: 0
+        },
+      },
+      category4: {
+        isRestricted: {
+          type: Boolean,
+          default: false
+        },
+        limit: {
+          type: Number,
+          default: 0
+        },
+      },
+      category5: {
+        isRestricted: {
+          type: Boolean,
+          default: false
+        },
+        limit: {
+          type: Number,
+          default: 0
+        },
+      },
+      category5a: {
+        isRestricted: {
+          type: Boolean,
+          default: false
+        },
+        limit: {
+          type: Number,
+          default: 0
+        },
+      },
+      category5b: {
+        isRestricted: {
+          type: Boolean,
+          default: false
+        },
+        limit: {
+          type: Number,
+          default: 0
+        },
+      },
+      category5c: {
+        isRestricted: {
+          type: Boolean,
+          default: false
+        },
+        limit: {
+          type: Number,
+          default: 0
+        },
+      },
+      category5d: {
+        isRestricted: {
+          type: Boolean,
+          default: false
+        },
+        limit: {
+          type: Number,
+          default: 0
+        },
+      },
+      category6: {
+        isRestricted: {
+          type: Boolean,
+          default: false
+        },
+        limit: {
+          type: Number,
+          default: 0
+        },
+      },
+      category7a: {
+        isRestricted: {
+          type: Boolean,
+          default: false
+        },
+        limit: {
+          type: Number,
+          default: 0
+        },
+      },
+      category7b: {
+        isRestricted: {
+          type: Boolean,
+          default: false
+        },
+        limit: {
+          type: Number,
+          default: 0
+        },
+      },
+      category8: {
+        isRestricted: {
+          type: Boolean,
+          default: false
+        },
+        limit: {
+          type: Number,
+          default: 0
+        },
+      },
+      category9: {
+        isRestricted: {
+          type: Boolean,
+          default: false
+        },
+        limit: {
+          type: Number,
+          default: 0
+        },
+      },
+      category10a: {
+        isRestricted: {
+          type: Boolean,
+          default: false
+        },
+        limit: {
+          type: Number,
+          default: 0
+        },
+      },
+      category10b: {
+        isRestricted: {
+          type: Boolean,
+          default: false
+        },
+        limit: {
+          type: Number,
+          default: 0
+        },
+      },
+      category11a: {
+        isRestricted: {
+          type: Boolean,
+          default: false
+        },
+        limit: {
+          type: Number,
+          default: 0
+        },
+      },
+      category11b: {
+        isRestricted: {
+          type: Boolean,
+          default: false
+        },
+        limit: {
+          type: Number,
+          default: 0
+        },
+      },
+      category12: {
+        isRestricted: {
+          type: Boolean,
+          default: false
+        },
+        limit: {
+          type: Number,
+          default: 0
+        },
+      }
+    },
     amendment: {
       type: Number,
       required: false
@@ -341,4 +547,3 @@ const rawMaterialSchema = new Schema({
 
 
 module.exports = model("RawMaterial", rawMaterialSchema);
-
