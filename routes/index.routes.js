@@ -71,6 +71,7 @@ router.get('/search', (req, res, next) => {
         }
       }
     ])
+      .toArray()
       .then(response => res.json(response))
       .catch(error => console.log(error));
   }
@@ -90,6 +91,7 @@ router.get('/search', (req, res, next) => {
         }
       }
     ])
+      .toArray()
       .then(response => res.json(response))
       .catch(error => console.log(error));
   }
