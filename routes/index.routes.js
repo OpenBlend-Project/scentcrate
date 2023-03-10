@@ -88,6 +88,16 @@ router.get('/search', (req, res, next) => {
             fuzzy: {}
           }
         }
+      },
+      {
+        $limit: 10
+      },
+      {
+        $project: {
+          "name.common": 1,
+          "name.botanical": 1,
+          "identifier.cas": 1
+        }
       }
     ])
       .then(response => res.json(response))
